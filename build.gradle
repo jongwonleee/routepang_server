@@ -70,8 +70,7 @@ dependencies {
     compile group: 'org.locationtech.jts', name: 'jts-core', version: '1.16.1'
 // https://mvnrepository.com/artifact/org.geolatte/geolatte-geom
     compile group: 'org.geolatte', name: 'geolatte-geom', version: '1.4.0'
-
-
+    
 
     runtime 'org.postgresql:postgresql:42.2.5'
     
@@ -95,3 +94,5 @@ docker {
     copySpec.from(tasks.unpack.outputs).into("dependency")
     buildArgs(['DEPENDENCY': "dependency"])
 }
+
+bootJar.enabled = false;

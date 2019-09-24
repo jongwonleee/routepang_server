@@ -1,21 +1,40 @@
-image: docker:latest
+image: frolvlad/alpine-java:jdk8-slim
 
 services:
   - docker:dind
 
 stages:
-  - build
+  - test
+#  - build
 
 variables:
-  IMAGE_TAG: $CI_REGISTRY_USER/$CI_PROJECT_NAME:”new tag”
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
 
 before_script:
-  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 
-build:
-  stage: build
+test:
+  stage: test
+
   script:
-    - docker build -t $IMAGE_TAG .
-    - docker push $IMAGE_TAG
+    - ./gradlew build
+    - ./gradlew test
+
   tags:
     - server
+
+#build:
+#  stage: build
+#
+#  image: docker:latest
+#
+#  script:
+#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+#
+#    - docker build --pull -t switaewon/server:latest .
+#    - docker push switaewon/server:latest
+#
+#  tags:
+#    - server
+
