@@ -47,9 +47,11 @@ COPY gradle $APP_HOME/gradle
 RUN ./gradlew build -x test --continue
 COPY . .
 RUN ./gradlew build
+RUN pwd && find /
 
 FROM openjdk:8-jre
-WORKDIR /root/
+WORKDIR /root/dev/myapp
+RUN pwd && find .
 COPY --from=BUILD_IMAGE /root/dev/myapp/build/libs/gs-spring-boot-docker-0.1.0.jar .
 EXPOSE 5432
 CMD ["java","-jar","gs-spring-boot-docker-0.1.0.jar"]

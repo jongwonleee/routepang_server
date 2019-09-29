@@ -4,8 +4,13 @@ services:
   - docker:dind
 
 stages:
+  - build
   - test
-#  - build
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
 
 variables:
   DOCKER_HOST: tcp://docker:2375
@@ -21,20 +26,25 @@ test:
     - ./gradlew build
     - ./gradlew test
 
+  artifacts:
+    paths:
+      - build/libs/*.jar
+    expire_in: 3 days
+
   tags:
     - server
 
-#build:
-#  stage: build
-#
-#  image: docker:latest
-#
-#  script:
-#    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-#
-#    - docker build --pull -t switaewon/server:latest .
-#    - docker push switaewon/server:latest
-#
-#  tags:
-#    - server
+build:
+  stage: build
+
+  image: docker:latest
+
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+
+    - docker build --pull -t switaewon/server:latest .
+    - docker push switaewon/server:latest
+
+  tags:
+    - server
 
