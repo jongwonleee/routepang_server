@@ -95,4 +95,4 @@ docker {
     buildArgs(['DEPENDENCY': "dependency"])
 }
 
-bootJar.enabled = false;
+//bootJar.enabled = false;

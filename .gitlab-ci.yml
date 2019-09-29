@@ -4,8 +4,8 @@ services:
   - docker:dind
 
 stages:
-  - build
   - test
+  - build
 
 cache:
   paths:
@@ -47,4 +47,3 @@ build:
 
   tags:
     - server
-
